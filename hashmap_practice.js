@@ -1,6 +1,6 @@
 import { LinkedList } from "./linked_list.js"
 
-export class Hashmap {
+export class HashMap {
     constructor (loadFactor = 0.75, capacity = 16) {
         this.loadFactor = loadFactor;
         this.capacity = capacity;
@@ -20,7 +20,9 @@ export class Hashmap {
     }
 
     set (key, value) {
-        const index = this.hash(key);
+        const index = this.hash(key) % this.capacity;
+        // console.log('legnth:', this.buckets.length)
+        // console.log('index', index);
         if (index < 0 || index >= this.buckets.length) {
             throw new Error("Trying to access index out of bounds");
         } 
@@ -71,14 +73,14 @@ export class Hashmap {
 
     get length () {
         let l = 0;
-        for (i = 0; i <= this.capacity; i++) {
+        for (let i = 0; i <= this.capacity; i++) {
             l += this.buckets[i].size;
         }
         return l;
     }
 
     get clear () {
-        for (i = 0; i <= this.capacity; i++) {
+        for (let i = 0; i <= this.capacity; i++) {
             let bucketSize = this.buckets[i].size
             for (k = 0; k <= bucketSize; k++)
                 this.buckets[i].pop();
@@ -88,9 +90,9 @@ export class Hashmap {
 
     get keys () {
         let keysArray = [];
-        for (i = 0; i <= this.capacity; i++) {
+        for (let i = 0; i <= this.capacity; i++) {
             let bucketSize = this.buckets[i].size
-            for (k = 0; k <= bucketSize; k++)
+            for (let k = 0; k <= bucketSize; k++)
                 key = this.buckets[i].at(k)[0];
                 keysArray.append(key)
         }
@@ -99,9 +101,9 @@ export class Hashmap {
 
     get keys () {
         let valuesArray = [];
-        for (i = 0; i <= this.capacity; i++) {
+        for (let i = 0; i <= this.capacity; i++) {
             let bucketSize = this.buckets[i].size
-            for (k = 0; k <= bucketSize; k++)
+            for (let k = 0; k <= bucketSize; k++)
                 value = this.buckets[i].at(k)[1];
                 valuesArray.append(value)
         }
@@ -110,11 +112,14 @@ export class Hashmap {
 
     get entries () {
         let entryArray = [];
-        for (i = 0; i <= this.capacity; i++) {
-            let bucketSize = this.buckets[i].size
-            for (k = 0; k <= bucketSize; k++)
-                entry = this.buckets[i].at(k);
-                entryArray.append(entry)
+        let entry = '';
+        for (let i = 0; i <= this.capacity; i++) {
+            if (this.buckets[i] != null){
+                let bucketSize = this.buckets[i].size;
+                for (let k = 0; k <= bucketSize; k++)
+                    entry = this.buckets[i].at(k-1).value;
+                    entryArray.push(entry)
+            }
         }
         return entryArray;
     }
