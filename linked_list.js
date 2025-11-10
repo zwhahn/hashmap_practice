@@ -96,6 +96,21 @@ export class LinkedList {
         return null
     }
 
+    update (index, newValue) {
+        let currentNode = this.head;
+        let k = 0;
+        while (currentNode.nextNode != null)  {
+            if (k == index) {
+                currentNode.value = newValue;
+                return
+            }
+            currentNode = currentNode.nextNode
+            k++;
+        }
+        return
+    }
+
+
     get toString() {
         let linkedListString = '';
         let currentNode = this.head;
