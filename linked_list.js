@@ -110,6 +110,23 @@ export class LinkedList {
         return
     }
 
+    remove (index) {
+        if (this.head == null) {
+            return
+        }
+        let previousNode = null;
+        let currentNode = this.head;
+        let nextNodePreview = currentNode.nextNode;
+        let k = 0;
+        while (k < index) {
+            previousNode = currentNode;
+            currentNode = currentNode.nextNode;
+            nextNodePreview = currentNode.nextNode;
+        }
+        previousNode.nextNode = nextNodePreview;
+        return 
+    }
+
 
     get toString() {
         let linkedListString = '';
