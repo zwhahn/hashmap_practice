@@ -23,7 +23,6 @@ export class HashMap {
         console.log("--------- NEW SET --------")
         console.log("key, value: ", key, value)
         const index = this.hash(key) % this.capacity;
-        // console.log('legnth:', this.buckets.length)
         console.log('index', index);
         if (index < 0 || index >= this.buckets.length) {
             throw new Error("Trying to access index out of bounds");
@@ -46,9 +45,14 @@ export class HashMap {
             else if (this.buckets[index].contains([key, value])) {
                 console.log("Collision");
                 const oldKeyIndex = this.buckets[index].find(key);
-                console.log("oldKeyIndex: ", oldKeyIndex)
+                // console.log("oldKeyIndex: ", oldKeyIndex)
                 this.buckets[index].update(oldKeyIndex, [key, value]);
             }
+        }
+        // Double array size
+        if (this.length > (this.loadFactor * this.capacity)) {
+            console.log("---- RESIZE --------")
+            this.resize();
         }
     }
     
@@ -104,18 +108,18 @@ export class HashMap {
             let bucketSize = this.buckets[i].size
             for (let k = 0; k <= bucketSize; k++)
                 key = this.buckets[i].at(k)[0];
-                keysArray.append(key)
+                keysArray.push(key)
         }
         return keysArray;
     }
 
-    get keys () {
+    get values () {
         let valuesArray = [];
         for (let i = 0; i < this.capacity; i++) {
             let bucketSize = this.buckets[i].size
             for (let k = 0; k <= bucketSize; k++)
                 value = this.buckets[i].at(k)[1];
-                valuesArray.append(value)
+                valuesArray.push(value)
         }
         return valuesArray;
     }
@@ -136,5 +140,23 @@ export class HashMap {
             }
         }
         return entryArray;
+    }
+
+    resize () {
+        const oldBuckets = this.buckets;
+        this.capacity *= 2;
+        this.buckets = new Array (this.capacity);
+        console.log("oldBuckets Size: ", oldBuckets.length)
+
+        for (let i = 0; i < oldBuckets.length; i++) {
+            let bucket = oldBuckets[i]
+            // console.log(`bucket: ${bucket}`)
+            if (bucket != null) {
+                for (let k = 0; k < bucket.size; k++) {
+                    const [key, value] = bucket.at(k).value;
+                    this.set(key, value);
+                }
+            }
+        }
     }
 }

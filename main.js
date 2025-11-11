@@ -16,6 +16,8 @@ test.set('kite', 'pink');
 test.set('lion', 'golden')
 test.set('lion', 'golden_overwrite')
 test.set('ice cream', 'white_overwrite')
+test.set('moon', 'silver')
+
 
 console.log(test.entries);
 console.log(test.length);

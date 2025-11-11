@@ -74,11 +74,11 @@ export class LinkedList {
 
     contains (value) {
         let currentNode = this.head;
-        console.log("input value: ", value);
+        // console.log("input value: ", value);
         while (currentNode) {
-            console.log("nodeValue[0]: ", currentNode.value[0])
+            // console.log("nodeValue[0]: ", currentNode.value[0])
             if (currentNode.value[0] == value[0]) {
-                console.log("true")
+                // console.log("true")
                 return true
             }
             currentNode = currentNode.nextNode
