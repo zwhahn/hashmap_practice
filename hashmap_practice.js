@@ -74,16 +74,24 @@ export class HashMap {
     }
 
     has (key) {
-        const index = this.hash(key);
-        return this.buckets[index].find(key);
+        if (this.get(key)) {
+            return true;
+        }
+        return false;
     }
 
     remove (key) {
         const index = this.hash(key);
-        if (this.buckets[index] != null && !this.buckets[index].contains(key)) {
-            const removalIndex = this.buckets[index].find(key);
-            this.buckets[index].remove(removalIndex);
-            return true;
+        const bucket = this.buckets[index];
+        while (bucket != null) {
+            let bucketSize = bucket.size;
+            // Loop over elements in bucket
+            for (let k = 0; k < bucketSize; k++) {
+                if (bucket.at(k).value[0] == key) {
+                    bucket.remove(k);
+                    return true;
+                }
+            }
         }
         return false;
     }

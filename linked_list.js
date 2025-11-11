@@ -125,6 +125,7 @@ export class LinkedList {
             previousNode = currentNode;
             currentNode = currentNode.nextNode;
             nextNodePreview = currentNode.nextNode;
+            k++
         }
         previousNode.nextNode = nextNodePreview;
         return 
