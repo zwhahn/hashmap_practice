@@ -16,34 +16,34 @@ export class HashMap {
             hashCode = primeNumber * hashCode + key.charCodeAt(i);
         }
 
-        return hashCode;
+        return hashCode % this.capacity;
     }
 
     set (key, value) {
-        console.log("--------- NEW SET --------")
-        console.log("key, value: ", key, value)
-        const index = this.hash(key) % this.capacity;
-        console.log('index', index);
+        // console.log("--------- NEW SET --------")
+        // console.log("key, value: ", key, value)
+        const index = this.hash(key);
+        // console.log('index', index);
         if (index < 0 || index >= this.buckets.length) {
             throw new Error("Trying to access index out of bounds");
         } 
         else {
             // Empty bucket
             if (this.buckets[index] == null) {
-                console.log("Empty");
+                // console.log("Empty");
                 const newList = new LinkedList();
                 newList.append([key, value])
                 this.buckets[index] = newList;
             } 
             // Another item in bucket
             else if (this.buckets[index] != null && !this.buckets[index].contains([key, value])) {
-                console.log("Item already in bucket");
+                // console.log("Item already in bucket");
                 this.buckets[index].append([key, value])
                 // console.log(this.buckets[index])
             }
             // Collision
             else if (this.buckets[index].contains([key, value])) {
-                console.log("Collision");
+                // console.log("Collision");
                 const oldKeyIndex = this.buckets[index].find(key);
                 // console.log("oldKeyIndex: ", oldKeyIndex)
                 this.buckets[index].update(oldKeyIndex, [key, value]);
@@ -51,20 +51,26 @@ export class HashMap {
         }
         // Double array size
         if (this.length > (this.loadFactor * this.capacity)) {
-            console.log("---- RESIZE --------")
+            // console.log("---- RESIZE --------")
             this.resize();
         }
     }
     
     get (key) {
-        const index = this.hash(key);
-        const node = this.buckets[index].find(key);
-        if (node == null) {
-            return null
+        const index = this.hash(key) ;
+        const bucket = this.buckets[index];
+        while (bucket != null) {
+            let bucketSize = bucket.size;
+            // Loop over elements in bucket
+            for (let k = 0; k < bucketSize; k++) {
+                if (bucket.at(k).value[0] == key) {
+                    console.log(key)
+                    console.log(bucket.at(k).value[0])
+                    return bucket.at(k).value[1];
+                }
+            }
         }
-        else {
-            return node[1];
-        }
+        return null;
     }
 
     has (key) {
@@ -146,7 +152,7 @@ export class HashMap {
         const oldBuckets = this.buckets;
         this.capacity *= 2;
         this.buckets = new Array (this.capacity);
-        console.log("oldBuckets Size: ", oldBuckets.length)
+        // console.log("oldBuckets Size: ", oldBuckets.length)
 
         for (let i = 0; i < oldBuckets.length; i++) {
             let bucket = oldBuckets[i]

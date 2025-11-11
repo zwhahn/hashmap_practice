@@ -20,4 +20,5 @@ test.set('moon', 'silver')
 
 
 console.log(test.entries);
+console.log(test.get('lion'));
 console.log(test.length);
