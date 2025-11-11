@@ -20,27 +20,34 @@ export class HashMap {
     }
 
     set (key, value) {
+        console.log("--------- NEW SET --------")
+        console.log("key, value: ", key, value)
         const index = this.hash(key) % this.capacity;
         // console.log('legnth:', this.buckets.length)
-        // console.log('index', index);
+        console.log('index', index);
         if (index < 0 || index >= this.buckets.length) {
             throw new Error("Trying to access index out of bounds");
         } 
         else {
             // Empty bucket
             if (this.buckets[index] == null) {
+                console.log("Empty");
                 const newList = new LinkedList();
                 newList.append([key, value])
                 this.buckets[index] = newList;
             } 
             // Another item in bucket
-            else if (this.buckets[index] != null & !this.buckets[index].contains(key)) {
+            else if (this.buckets[index] != null && !this.buckets[index].contains([key, value])) {
+                console.log("Item already in bucket");
                 this.buckets[index].append([key, value])
+                // console.log(this.buckets[index])
             }
             // Collision
-            else if (this.buckets[index].contains(key)) {
-                oldKeyIndex = this.buckets[index].find(key)
-                this.buckets[index].update(oldKeyIndex, [key, value])
+            else if (this.buckets[index].contains([key, value])) {
+                console.log("Collision");
+                const oldKeyIndex = this.buckets[index].find(key);
+                console.log("oldKeyIndex: ", oldKeyIndex)
+                this.buckets[index].update(oldKeyIndex, [key, value]);
             }
         }
     }
@@ -63,7 +70,7 @@ export class HashMap {
 
     remove (key) {
         const index = this.hash(key);
-        if (this.buckets[index] != null & !this.buckets[index].contains(key)) {
+        if (this.buckets[index] != null && !this.buckets[index].contains(key)) {
             const removalIndex = this.buckets[index].find(key);
             this.buckets[index].remove(removalIndex);
             return true;
@@ -73,14 +80,17 @@ export class HashMap {
 
     get length () {
         let l = 0;
-        for (let i = 0; i <= this.capacity; i++) {
-            l += this.buckets[i].size;
+        for (let i = 0; i < this.capacity; i++) {
+            if (this.buckets[i] != null){
+                // console.log(this.buckets[i])
+                l += this.buckets[i].size;
+            }
         }
         return l;
     }
 
     get clear () {
-        for (let i = 0; i <= this.capacity; i++) {
+        for (let i = 0; i < this.capacity; i++) {
             let bucketSize = this.buckets[i].size
             for (k = 0; k <= bucketSize; k++)
                 this.buckets[i].pop();
@@ -90,7 +100,7 @@ export class HashMap {
 
     get keys () {
         let keysArray = [];
-        for (let i = 0; i <= this.capacity; i++) {
+        for (let i = 0; i < this.capacity; i++) {
             let bucketSize = this.buckets[i].size
             for (let k = 0; k <= bucketSize; k++)
                 key = this.buckets[i].at(k)[0];
@@ -101,7 +111,7 @@ export class HashMap {
 
     get keys () {
         let valuesArray = [];
-        for (let i = 0; i <= this.capacity; i++) {
+        for (let i = 0; i < this.capacity; i++) {
             let bucketSize = this.buckets[i].size
             for (let k = 0; k <= bucketSize; k++)
                 value = this.buckets[i].at(k)[1];
@@ -113,12 +123,16 @@ export class HashMap {
     get entries () {
         let entryArray = [];
         let entry = '';
-        for (let i = 0; i <= this.capacity; i++) {
+        // Loop over buckets
+        for (let i = 0; i < this.capacity; i++) {
+            // Check if bucket is empty
             if (this.buckets[i] != null){
                 let bucketSize = this.buckets[i].size;
-                for (let k = 0; k <= bucketSize; k++)
-                    entry = this.buckets[i].at(k-1).value;
+                // Loop over elements in bucket
+                for (let k = 0; k < bucketSize; k++) {
+                    entry = this.buckets[i].at(k).value;
                     entryArray.push(entry)
+                }
             }
         }
         return entryArray;

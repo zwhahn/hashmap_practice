@@ -74,8 +74,11 @@ export class LinkedList {
 
     contains (value) {
         let currentNode = this.head;
-        while (currentNode.nextNode != null) {
-            if (currentNode.value == value) {
+        console.log("input value: ", value);
+        while (currentNode) {
+            console.log("nodeValue[0]: ", currentNode.value[0])
+            if (currentNode.value[0] == value[0]) {
+                console.log("true")
                 return true
             }
             currentNode = currentNode.nextNode
@@ -86,8 +89,8 @@ export class LinkedList {
     find (value) {
         let currentNode = this.head;
         let k = 0;
-        while (currentNode.nextNode != null)  {
-            if (currentNode.value == value) {
+        while (currentNode)  {
+            if (currentNode.value[0] == value) {
                 return k
             }
             currentNode = currentNode.nextNode
@@ -99,7 +102,7 @@ export class LinkedList {
     update (index, newValue) {
         let currentNode = this.head;
         let k = 0;
-        while (currentNode.nextNode != null)  {
+        while (currentNode)  {
             if (k == index) {
                 currentNode.value = newValue;
                 return
