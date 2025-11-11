@@ -60,13 +60,14 @@ export class LinkedList {
         if (this.head == null) {
             return
         }
+
         let previousNode = null;
         let currentNode = this.head;
-        let nextNodePreview = currentNode.nextNode;
-        while (nextNodePreview != null) {
+        let nextNode = currentNode.nextNode;
+        while (nextNode != null) {
             previousNode = currentNode;
             currentNode = currentNode.nextNode
-            nextNodePreview = currentNode.nextNode
+            nextNode = currentNode.nextNode
         }
         previousNode.nextNode = null;
         return 

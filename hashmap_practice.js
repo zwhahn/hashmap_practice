@@ -4,6 +4,7 @@ export class HashMap {
     constructor (loadFactor = 0.75, capacity = 16) {
         this.loadFactor = loadFactor;
         this.capacity = capacity;
+        this.initialCapacity = capacity;
         this.buckets = new Array( capacity );
     }
 
@@ -108,11 +109,7 @@ export class HashMap {
     }
 
     get clear () {
-        for (let i = 0; i < this.capacity; i++) {
-            let bucketSize = this.buckets[i].size
-            for (k = 0; k <= bucketSize; k++)
-                this.buckets[i].pop();
-        }
+        this.buckets = new Array (this.initialCapacity);
         return;
     }
 
