@@ -116,10 +116,11 @@ export class HashMap {
     get keys () {
         let keysArray = [];
         for (let i = 0; i < this.capacity; i++) {
-            let bucketSize = this.buckets[i].size
-            for (let k = 0; k <= bucketSize; k++)
-                key = this.buckets[i].at(k)[0];
-                keysArray.push(key)
+            if (this.buckets[i]){
+                let bucketSize = this.buckets[i].size
+                for (let k = 0; k < bucketSize; k++)
+                    keysArray.push(this.buckets[i].at(k).value[0])
+            }
         }
         return keysArray;
     }
@@ -127,10 +128,11 @@ export class HashMap {
     get values () {
         let valuesArray = [];
         for (let i = 0; i < this.capacity; i++) {
-            let bucketSize = this.buckets[i].size
-            for (let k = 0; k <= bucketSize; k++)
-                value = this.buckets[i].at(k)[1];
-                valuesArray.push(value)
+            if (this.buckets[i]){
+                let bucketSize = this.buckets[i].size
+                for (let k = 0; k < bucketSize; k++)
+                    valuesArray.push(this.buckets[i].at(k).value[1])
+            }
         }
         return valuesArray;
     }
